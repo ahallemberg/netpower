@@ -1,14 +1,37 @@
 #!/bin/bash
 
-# Get the directory of the script
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 function_dir="$script_dir/src"
-export data_file="$script_dir/data/devices"
+export DATA_FILE="$script_dir/data/devices"
+export WOL_CMD=$("$function_dir/get_wol_cmd.sh")
+
+cleanup() {
+  unset DATA_FILE WOL_CMD
+}
+
+trap cleanup EXIT
+
+# check for wakeonlan 
+if ! command -v $WOL_CMD &> /dev/null; then
+    read -p "wakeonlan is not installed. Do you want to install it? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if "$function_dir/install_wol.sh"; then 
+          echo"wakeonlan installed successfully"
+        else 
+          echo "Failed to install wakeonlan. Try to install manually"
+          exit 1
+        fi 
+    else
+        echo "wakeonlan is required for this script to function. Exiting."
+        exit 1
+    fi
+fi
 
 # make sure data file exists
-if [ ! -f "$data_file" ]; then
-    mkdir -p "$(dirname "$data_file")"
-    touch "$data_file"
+if [ ! -f "$DATA_FILE" ]; then
+    mkdir -p "$(dirname "$DATA_FILE")"
+    touch "$DATA_FILE"
 fi 
 
 case "$1" in
@@ -17,7 +40,6 @@ case "$1" in
             func="$1"
             shift
             "$function_dir/$func.sh" "$@"
-            unset data_file 
         else
             echo "Function not found: $1"
             exit 1
