@@ -5,7 +5,7 @@ utils_dir="$script_dir/utils"
 function_dir="$script_dir/src"
 export DATA_FILE="$script_dir/data/devices"
 
-"$utils_dir/get_wol_cmd.sh"
+source "$utils_dir/get_wol_cmd.sh"
 
 cleanup() {
   unset DATA_FILE WOL_CMD
@@ -21,7 +21,7 @@ if [ -z "$WOL_CMD" ] || ! command -v "$WOL_CMD" &> /dev/null; then
         if "$utils_dir/install_wol.sh"; then 
           echo "wakeonlan installed successfully"
           "$utils_dir/get_wol_cmd.sh"
-          
+
         else 
           echo "Failed to install wakeonlan. Try to install manually"
           exit 1
