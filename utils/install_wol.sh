@@ -1,16 +1,21 @@
 #!/bin/bash
 
-if command -v apt-get &> /dev/null; then
-  sudo apt-get update && sudo apt-get install -y wakeonlan
+if command -v apt &> /dev/null; then
+  sudo apt update
+  sudo apt install -y wakeonlan
 elif command -v dnf &> /dev/null; then
-  sudo dnf install -y wakeonlan
+  sudo dnf install -y wol
 elif command -v yum &> /dev/null; then
   sudo yum install -y wakeonlan
 elif command -v pacman &> /dev/null; then
-  sudo pacman -S --noconfirm wakeonlan
+  sudo pacman -S --noconfirm wol
 elif command -v zypper &> /dev/null; then
   sudo zypper install -y wakeonlan
+elif command -v apk &> /dev/null; then
+  sudo apk add wakeonlan
 else
-  echo "Error: Unable to install wakeonlan. Please install it manually."
   exit 1
-fi
+fi 
+
+
+

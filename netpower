@@ -1,9 +1,11 @@
 #!/bin/bash
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+utils_dir="$script_dir/utils"
 function_dir="$script_dir/src"
 export DATA_FILE="$script_dir/data/devices"
-export WOL_CMD=$("$function_dir/get_wol_cmd.sh")
+
+"$utils_dir/get_wol_cmd.sh"
 
 cleanup() {
   unset DATA_FILE WOL_CMD
@@ -12,11 +14,11 @@ cleanup() {
 trap cleanup EXIT
 
 # check for wakeonlan 
-if ! command -v $WOL_CMD &> /dev/null; then
+if [ -z "$WOL_CMD" ] || ! command -v "$WOL_CMD" &> /dev/null; then
     read -p "wakeonlan is not installed. Do you want to install it? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        if "$function_dir/install_wol.sh"; then 
+        if "$utils_dir/install_wol.sh"; then 
           echo"wakeonlan installed successfully"
         else 
           echo "Failed to install wakeonlan. Try to install manually"
@@ -35,7 +37,7 @@ if [ ! -f "$DATA_FILE" ]; then
 fi 
 
 case "$1" in
-    add|down|remove|restart|up)
+    add|remove|up)
         if [ -f "$function_dir/$1.sh" ]; then
             func="$1"
             shift
@@ -46,7 +48,7 @@ case "$1" in
         fi
         ;;
     *)
-        echo "Usage: netpower {add|down|remove|restart|up} [arguments]"
+        echo "Usage: netpower {add|remove|up} [arguments]"
         exit 1
         ;;
 esac

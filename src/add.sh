@@ -1,6 +1,5 @@
 #!/bin/bash 
 
-# Check if we have the correct number of arguments
 if [ $# -ne 2 ]; then
     echo "Usage: $0 <hostname|IP> <MAC address>"
     exit 1
@@ -17,13 +16,13 @@ fi
 
 # Check if the hostname already exists
 if grep -q "^$host;" "$DATA_FILE"; then
-    echo "Error: Hostname '$host' already exists in the data file."
+    echo "Error: Hostname '$host' already exists"
     exit 1
 fi
 
 # Check if the MAC address already exists
 if grep -q ";$mac$" "$DATA_FILE"; then
-    echo "Error: MAC address '$mac' already exists in the data file."
+    echo "Error: MAC address '$mac' already exists"
     exit 1
 fi
 
