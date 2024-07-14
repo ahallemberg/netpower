@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Get the directory of the script
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+function_dir="$script_dir/src"
+export data_file="$script_dir/data/devices"
+
+# make sure data file exists
+if [ ! -f "$data_file" ]; then
+    mkdir -p "$(dirname "$data_file")"
+    touch "$data_file"
+fi 
+
+case "$1" in
+    add|down|remove|restart|up)
+        if [ -f "$function_dir/$1.sh" ]; then
+            func="$1"
+            shift
+            "$function_dir/$func.sh" "$@"
+            unset data_file 
+        else
+            echo "Function not found: $1"
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Usage: netpower {add|down|remove|restart|up} [arguments]"
+        exit 1
+        ;;
+esac
