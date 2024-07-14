@@ -34,11 +34,11 @@ add_to_path_file() {
 case "$SHELL" in
     */zsh)
         add_to_path_file "$HOME/.zprofile"
-        source "$HOME/.zprofile"
+        echo "Please run 'source ~/.zprofile' to update the PATH in the current shell"
         ;;
     */bash)
         add_to_path_file "$HOME/.bashrc"
-        source "$HOME/.bashrc"
+        echo "Please run 'source ~/.bashrc' to update the PATH in the current shell"
         ;;
     *)
         echo "Unsupported shell. Please add the following line to your shell configuration file:"
