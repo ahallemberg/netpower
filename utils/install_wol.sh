@@ -1,10 +1,9 @@
 #!/bin/bash
 
 if command -v apt &> /dev/null; then
-  sudo apt update
-  sudo apt install -y wakeonlan
+  sudo apt-get install -y -qq wakeonlan
 elif command -v dnf &> /dev/null; then
-  sudo dnf install -y wol
+  sudo dnf install -y -q wol
 elif command -v yum &> /dev/null; then
   sudo yum install -y wakeonlan
 elif command -v pacman &> /dev/null; then
