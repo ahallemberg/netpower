@@ -19,7 +19,9 @@ if [ -z "$WOL_CMD" ] || ! command -v "$WOL_CMD" &> /dev/null; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         if "$utils_dir/install_wol.sh"; then 
-          echo"wakeonlan installed successfully"
+          echo "wakeonlan installed successfully"
+          "$utils_dir/get_wol_cmd.sh"
+          
         else 
           echo "Failed to install wakeonlan. Try to install manually"
           exit 1
