@@ -13,7 +13,7 @@ and then run
 
 ## Setup 
 
-To get started run and source your shell 
+To get started execute setup.sh and then source you bashrc 
 
     ./setup.sh 
 
